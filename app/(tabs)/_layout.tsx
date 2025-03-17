@@ -16,7 +16,7 @@ export default function _layout() {
                   backgroundColor: "black",
                   borderTopWidth: 0,
                   position: "absolute",
-                  height: 40,
+                  height: 60,
                   paddingBottom:8,
                   paddingTop:8,
                 }

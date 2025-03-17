@@ -1,7 +1,7 @@
-import { Stack } from "expo-router";
-import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { tokenCache } from "@/cache";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"; 
+import { StatusBar } from 'expo-status-bar';
+import InitialLayout from "@/components/initial-layout";
+import ClerkAndConvexProvider from "@/providers/clerk-and-convex-provider";
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
 if (!publishableKey) {
@@ -11,16 +11,13 @@ if (!publishableKey) {
 }
 export default function RootLayout() {
   return (
-    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-      <ClerkLoaded>
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 ,backgroundColor:'#000'}}>
-        <Stack screenOptions={{headerShown: false}}>
-        </Stack>
-      </SafeAreaView>
-        </SafeAreaProvider>
-      </ClerkLoaded>
-    </ClerkProvider>
-
+    <ClerkAndConvexProvider>
+      <StatusBar style="light" backgroundColor="#121212" />
+      <SafeAreaProvider>
+        <SafeAreaView style={{ flex: 1}}>
+          <InitialLayout />
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </ClerkAndConvexProvider>
   );
 }
