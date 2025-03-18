@@ -21,12 +21,17 @@ export default defineSchema({
     likes: v.number(),
     comments: v.number(),
   }).index("by_user", ["userId"]),
+  
   likes: defineTable({
     userId: v.id("users"),
     postId: v.id("posts"),
   })
     .index("by_post", ["postId"])
     .index("by_user_and_post", ["userId", "postId"]),
+  bookmarks: defineTable({
+    userId: v.id("users"),
+    postId: v.id("posts"),
+  }).index("by_user_and_post", ["userId", "postId"]),
   comments: defineTable({
     userId: v.id("users"),
     postId: v.id("posts"),
@@ -38,13 +43,12 @@ export default defineSchema({
   })
     .index("by_follower", ["followersId"])
     .index("by_following", ["followingId"])
-        .index("by_both", ["followersId", "followingId"]),
-    notifications: defineTable({
-        receiverId: v.id("users"),
-        senderId: v.id('users'),
-        type: v.union(v.literal('like'), v.literal('comment'), v.literal('follow')),
-        postId: v.optional(v.id('posts')),
-        commentId: v.optional(v.id('comments')),
-
+    .index("by_both", ["followersId", "followingId"]),
+  notifications: defineTable({
+    receiverId: v.id("users"),
+    senderId: v.id("users"),
+    type: v.union(v.literal("like"), v.literal("comment"), v.literal("follow")),
+    postId: v.optional(v.id("posts")),
+    commentId: v.optional(v.id("comments")),
   }).index("by_receiver", ["receiverId"]),
 });
