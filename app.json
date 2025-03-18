@@ -11,8 +11,12 @@
     "ios": {
       "supportsTablet": true
     },
-     
+    
     "android": {
+      "permissions": [
+        "EXTERNAL_STORAGE_READ",
+        "EXTERNAL_STORAGE_WRITE"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"

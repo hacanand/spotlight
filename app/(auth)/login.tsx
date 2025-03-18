@@ -8,17 +8,24 @@ import { useRouter } from "expo-router";
 export default function Login() {
   const { startSSOFlow } = useSSO();
   const router = useRouter();
-  const handleGoogleSignIn = async () => {
-    try {
-      const { setActive, createdSessionId } = await startSSOFlow({ strategy: 'oauth_google' })
-      if (setActive && createdSessionId) {
-        setActive({ session: createdSessionId })
-        router.replace('/(tabs)')
-      }
-    } catch (error) {
-      console.error('oauth error');
+const handleGoogleSignIn = async () => {
+  try {
+    const response = await startSSOFlow({ strategy: "oauth_google" });
+    console.log('response:',response); // Log the full response to verify it
+
+    const { setActive, createdSessionId } = response;
+
+    if (setActive && createdSessionId) {
+      setActive({ session: createdSessionId });
+      router.replace("/(tabs)"); // Ensure '/(tabs)' is a valid path in your app
+    } else {
+      console.error("OAuth flow failed: Missing required data");
     }
+  } catch (error) {
+    console.error("OAuth error:", error); // Log the actual error
   }
+};
+
     return (
       <View style={styles.container}>
         {/* //brand section */}
