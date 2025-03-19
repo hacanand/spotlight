@@ -1,14 +1,13 @@
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import React from "react";
-import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
 import Loader from "@/components/loader";
+import NotificationsItem from "@/components/notifications";
+import { COLORS } from "@/constants/theme";
+import { api } from "@/convex/_generated/api";
 import { styles } from "@/styles/notifications.styles";
 import { Ionicons } from "@expo/vector-icons";
-import { COLORS } from "@/constants/theme";
-import { Link } from "expo-router";
-import { Image } from "expo-image";
-
+import { useQuery } from "convex/react";
+import React from "react";
+import { FlatList, Text, View } from "react-native";
+ 
 const Notifications = () => {
   const notifications = useQuery(api.notifications.getNotifications);
   if (notifications === undefined) {
@@ -24,7 +23,7 @@ const Notifications = () => {
       </View>
       <FlatList
         data={notifications}
-        renderItem={({ item }) => <NotificationItem notification={item} />}
+        renderItem={({ item }) => <NotificationsItem notification={item} />}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContainer}
@@ -46,48 +45,6 @@ type NotificationItemProps = {
     commentId: string;
   };
 };
-function NotificationItem({ notification }: any) {
-  return (
-    <View style={styles.notificationItem}>
-      <View style={styles.notificationContent}>
-        <Link href={"/notifications"} asChild>
-          <TouchableOpacity style={styles.avatarContainer}>
-            <Image
-              source={{ uri: notification.sender.image }}
-              style={styles.avatar}
-              contentFit="cover"
-              transition={200}
-              cachePolicy="memory-disk"
-            />
-            <View style={styles.iconBadge}>
-              {notification.type === "like" ? (
-                <Ionicons name="heart" size={14} color={COLORS.primary} />
-              ) : notification.type === "follow" ? (
-                <Ionicons name="person-add" size={14} color="#8B5CF6" />
-              ) : (
-                <Ionicons name="chatbubble" size={14} color="#3B82f6" />
-              )}
-            </View>
-          </TouchableOpacity>
-        </Link>
-        <View style={styles.notificationInfo}>
-          <Link href={`/notifications`} asChild>
-            <TouchableOpacity>
-              <Text style={styles.username}>{notification.sender.username }</Text>
-            </TouchableOpacity>
-          </Link>
-          <Text style={styles.action}>
-            {notification.type === 'follow'
-              ? 'started following you'
-              : notification.type === 'like'
-              ? 'liked your post'
-              : 'commented : ' + notification.comment}
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
-}
 
 function NoNotificationsFound() {
   return (
