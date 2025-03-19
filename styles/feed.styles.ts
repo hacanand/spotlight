@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
   },
   post: {
-    marginBottom: 16,
+    marginBottom: 8,
   },
   postHeader: {
     flexDirection: "row",
