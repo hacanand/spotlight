@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - 'v*.*.*'
-    branches:
-      - master
 
 jobs:
   build-and-release:
@@ -41,7 +39,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: bump version to ${{ steps.get_version.outputs.VERSION }}"
-          branch: main
+          branch: master
         env:
           GITHUB_TOKEN: ${{ secrets.SPOTLIGHT_GITHUB_TOKEN }}
 
@@ -75,7 +73,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SPOTLIGHT_GITHUB_TOKEN }}
 
   auto-update:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
