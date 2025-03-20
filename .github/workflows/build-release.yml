@@ -14,17 +14,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: '20.x'
-          cache: 'npm'
+          bun-version: latest
 
       - name: Install Dependencies
-        run: npm install
+        run: bun install
 
       - name: Install Expo & EAS CLI
-        run: npm install -g expo-cli eas-cli
+        run: bun add -g expo-cli eas-cli
 
       - name: Authenticate with Expo
         run: eas login --non-interactive
@@ -39,7 +38,7 @@ jobs:
 
       - name: Update Version in app.json
         run: |
-          npm install -g json
+          bun add -g json
           json -I -f app.json -e "this.expo.version='${{ steps.get_version.outputs.VERSION }}'"
 
       - name: Commit Version Update
