@@ -12,6 +12,14 @@
       "distribution": "internal"
     },
     "production": {
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:bundleRelease"
+      },
+      "ios": {
+        "buildType": "ipa",
+        "buildScheme": "Release"
+      },
       "autoIncrement": true
     }
   },
