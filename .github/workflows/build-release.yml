@@ -35,14 +35,6 @@ jobs:
       - name: Update Version in app.json
         run: json -I -f app.json -e "this.expo.version='${{ steps.get_version.outputs.VERSION }}'"
 
-      - name: Commit Version Update
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: bump version to ${{ steps.get_version.outputs.VERSION }}"
-          branch: master
-        env:
-          GITHUB_TOKEN: ${{ secrets.SPOTLIGHT_GITHUB_TOKEN }}
-
       - name: Build Android APK
         run: eas build -p android --profile production --non-interactive --wait
         env:
