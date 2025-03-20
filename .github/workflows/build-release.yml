@@ -1,0 +1,76 @@
+name: Expo Build & Release with Auto Versioning
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install Expo & EAS CLI
+        run: npm install -g expo-cli eas-cli
+
+      - name: Authenticate with Expo
+        run: eas login --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Extract Version from Tag
+        id: get_version
+        run: |
+          VERSION=$(echo "${GITHUB_REF#refs/tags/v}")
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update Version in app.json
+        run: |
+          npm install -g json
+          json -I -f app.json -e "this.expo.version='${{ steps.get_version.outputs.VERSION }}'"
+
+      - name: Commit Version Update
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: bump version to ${{ steps.get_version.outputs.VERSION }}"
+          branch: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.SPOTLIGHT_GITHUB_TOKEN }}
+
+      - name: Build Android APK
+        run: eas build -p android --profile production --non-interactive --wait
+
+      - name: Download Android APK
+        run: eas build:download -p android --profile production --output spotlight-${{ steps.get_version.outputs.VERSION }}.apk
+
+      - name: Build iOS IPA
+        run: eas build -p ios --profile production --non-interactive --wait
+
+      - name: Download iOS IPA
+        run: eas build:download -p ios --profile production --output spotlight-${{ steps.get_version.outputs.VERSION }}.ipa
+
+      - name: Create GitHub Release & Upload Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: |
+            spotlight-${{ steps.get_version.outputs.VERSION }}.apk
+            spotlight-${{ steps.get_version.outputs.VERSION }}.ipa
+        env:
+          GITHUB_TOKEN: ${{ secrets.SPOTLIGHT_GITHUB_TOKEN }}

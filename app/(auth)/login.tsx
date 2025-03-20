@@ -11,7 +11,7 @@ export default function Login() {
 const handleGoogleSignIn = async () => {
   try {
     const response = await startSSOFlow({ strategy: "oauth_google" });
-    console.log('response:',response); // Log the full response to verify it
+    
 
     const { setActive, createdSessionId } = response;
 
@@ -31,7 +31,11 @@ const handleGoogleSignIn = async () => {
         {/* //brand section */}
         <View style={styles.brandSection}>
           <View style={styles.logoContainer}>
-            <Ionicons name="leaf" size={32} color={COLORS.primary} />
+            <Image
+              source={require("@/assets/images/icon.png")}
+              style={{ width: 50, height: 50 }}
+              resizeMode="contain"
+            />
           </View>
           <Text style={styles.appName}>spotlight</Text>
           <Text style={styles.tagline}>don't miss anything</Text>
@@ -39,7 +43,7 @@ const handleGoogleSignIn = async () => {
         {/* //illustration */}
         <View style={styles.illustrationContainer}>
           <Image
-            source={require("@/assets/images/Fingerprint-bro.png")}
+            source={require("@/assets/images/login-screen.png")}
             style={styles.illustration}
             resizeMode="cover"
           />
