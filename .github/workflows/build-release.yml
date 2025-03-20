@@ -1,9 +1,9 @@
-name: Expo CI/CD with Bun
+name: Expo CI/CD with apk in release assets
 
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
 
 jobs:
   build-and-release:
@@ -24,69 +24,32 @@ jobs:
         run: bun install
 
       - name: Install Expo & EAS CLI
-        run: bun add -g eas-cli expo-cli json
+        run: bun add -g eas-cli expo-cli
 
       - name: Extract Version from Tag
         id: get_version
         run: |
           VERSION=$(echo "${GITHUB_REF#refs/tags/v}")
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-          echo "Extracted version: $VERSION"  # Debugging output
 
       - name: Update Version in app.json
         run: |
-          echo "Updating version in app.json..."
           json -I -f app.json -e "this.expo.version='${{ steps.get_version.outputs.VERSION }}'"
-        continue-on-error: false  # Ensures this step stops the build if it fails
 
-      - name: Build Android APK
-        run: eas build -p android --profile production --non-interactive --wait
+      - name: Build Android APK (Preview Profile)
+        run: eas build --platform android --profile preview --local --output ${{ github.workspace }}/app-release-${{ steps.get_version.outputs.VERSION }}.apk
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Download Android APK
-        run: eas build:download -p android --profile production --output spotlight-${{ steps.get_version.outputs.VERSION }}.apk
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Build iOS IPA
-        run: eas build -p ios --profile production --non-interactive --wait
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Download iOS IPA
-        run: eas build:download -p ios --profile production --output spotlight-${{ steps.get_version.outputs.VERSION }}.ipa
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Upload APK as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release
+          path: ${{ github.workspace }}/app-release-${{ steps.get_version.outputs.VERSION }}.apk
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            spotlight-${{ steps.get_version.outputs.VERSION }}.apk
-            spotlight-${{ steps.get_version.outputs.VERSION }}.ipa
+          files: ${{ github.workspace }}/app-release-${{ steps.get_version.outputs.VERSION }}.apk
         env:
           GITHUB_TOKEN: ${{ secrets.SPOTLIGHT_GITHUB_TOKEN }}
-
-  auto-update:
-    if: github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-
-      - name: Install Dependencies
-        run: bun install
-
-      - name: Install EAS CLI
-        run: bun add -g eas-cli
-
-      - name: Publish OTA Update
-        run: eas update --auto --non-interactive
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
