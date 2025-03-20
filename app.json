@@ -18,6 +18,7 @@
 
     },
     "android": {
+      "package": "com.codesphere.spotlight",
       "permissions": [
         "EXTERNAL_STORAGE_WRITE",
         "EXTERNAL_STORAGE_WRITE"
