@@ -22,14 +22,14 @@ type CommentsModalProps = {
   postId: Id<"posts">;
   visible: boolean;
   onClose: () => void;
-  onCommentAdded: () => void;
+ 
 };
 
 export default function CommentsModal({
   postId,
   onClose,
   visible,
-  onCommentAdded,
+  
 }: CommentsModalProps) {
   const [newComment, setNewComment] = useState("");
   const comments = useQuery(api.comments.getComments, { postId });
@@ -39,7 +39,7 @@ export default function CommentsModal({
     try {
       await addComment({ postId, content: newComment });
       setNewComment("");
-      onCommentAdded();
+     
     } catch (error) {
       console.error("Failed to add comment", error);
     }

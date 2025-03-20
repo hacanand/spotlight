@@ -4,8 +4,9 @@ import InitialLayout from "@/components/initial-layout";
 import ClerkAndConvexProvider from "@/providers/clerk-and-convex-provider";
 import { SplashScreen } from "expo-router";
 import { useFonts } from "expo-font";
-import { useCallback } from "react";
-
+import { useCallback, useEffect } from "react";
+import * as NavigationBar from 'expo-navigation-bar'
+import { Platform } from "react-native";
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -14,10 +15,15 @@ export default function RootLayout() {
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) await SplashScreen.hideAsync();
   }, [fontsLoaded]);
+  useEffect(() => {
+    if(Platform.OS === 'android') {
+      NavigationBar.setBackgroundColorAsync('#000000');
+      NavigationBar.setButtonStyleAsync('light')
+  }
+  }, [])
 
   return (
     <ClerkAndConvexProvider>
-      <StatusBar style="light" />
       <SafeAreaProvider>
         <SafeAreaView
           style={{ flex: 1, backgroundColor: "#000" }}
@@ -26,6 +32,7 @@ export default function RootLayout() {
           <InitialLayout />
         </SafeAreaView>
       </SafeAreaProvider>
+      <StatusBar style="light" />
     </ClerkAndConvexProvider>
   );
 }
