@@ -2,6 +2,10 @@
 
 This is an Expo project designed to demonstrate building and running a mobile app with React Native and Expo. It supports both Android and iOS platforms.
 
+# **Install the apk file from Release section**
+Go to  [Release section](https://github.com/hacanand/spotlight/releases) to download the apk file and install it in your android device to see the app in action, you can also see the screenshots below to see the app in action.
+
+
 ## Get started (locally)
 
 1. **Clone the Prject from Github**
