@@ -91,9 +91,9 @@ export default function CreateScreen() {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "padding"}
+      behavior="padding"
       style={styles.container}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 60}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 80}
     >
       <View style={styles.contentContainer}>
         <View style={styles.header}>
@@ -162,6 +162,7 @@ export default function CreateScreen() {
                   value={caption}
                   onChangeText={setCaption}
                   editable={!isSharing}
+                  autoFocus={true}
                 />
               </View>
             </View>

@@ -108,6 +108,9 @@ export const styles = StyleSheet.create({
     flex: 1,
     color: COLORS.white,
     fontSize: 16,
+    backgroundColor:COLORS.surface,
+    borderRadius: 8,
+    paddingHorizontal: 12,
     paddingTop: 8,
     minHeight: 40,
  

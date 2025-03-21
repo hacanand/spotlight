@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   storiesContainer: {
     paddingVertical: 12,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     borderBottomColor: COLORS.surface,
   },
   storyWrapper: {
