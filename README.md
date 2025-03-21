@@ -62,7 +62,7 @@ This is an Expo project designed to demonstrate building and running a mobile ap
 - [x] User can see the images of the users they are following
 
 ## Screenshots(Updated)
-<p float="left">
+<p float="left" style="display:flex;flex-wrap:wrap; gap:10px;">
 <img src="assets/screenshots/Screenshot_2025-03-21-11-46-38-45_f73b71075b1de7323614b647fe394240.jpg" width="200"/>
 <img src="assets/screenshots/Screenshot_2025-03-21-12-33-21-60_95733e4f24b8b00eae762722f6023135.jpg" width="200"/>
 <img src="assets/screenshots/Screenshot_2025-03-21-12-05-58-53_f73b71075b1de7323614b647fe394240.jpg" width="200"/>
