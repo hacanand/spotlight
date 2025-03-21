@@ -72,7 +72,8 @@ This is an Expo project designed to demonstrate building and running a mobile ap
 <img src="assets/screenshots/Screenshot_2025-03-21-12-05-19-44_f73b71075b1de7323614b647fe394240.jpg" width="200"/>
 <img src="assets/screenshots/Screenshot_2025-03-21-12-05-27-08_f73b71075b1de7323614b647fe394240.jpg" width="200"/>
 <img src="assets/screenshots/Screenshot_2025-03-21-12-08-29-94_f73b71075b1de7323614b647fe394240.jpg" width="200"/>
-<img src="assets/screenshots/Screenshot_2025-03-21-12-08-29-94_f73b71075b1de7323614b647fe394240.jpg" width="200"/>
+</p>
+<img src="assets/screenshots/Screenshot_2025-03-21-12-08-34-27_f73b71075b1de7323614b647fe394240.jpg" width="200"/>
 </p>
 
 ## Tech Stack
